@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RedArbor.AspNetCore.WebApi.App.Repositories;
 using RedArbor.AspNetCore.WebApi.App.Services;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace RedArbor.AspNetCore.WebApi.App
 {
@@ -21,16 +22,27 @@ namespace RedArbor.AspNetCore.WebApi.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);            
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);          
             services.AddSingleton(Configuration);
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddAutoMapper();
+
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc("v1", new Info { Title = "ReadArbor Web Api Asp.Net Core", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi V1");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -38,7 +50,7 @@ namespace RedArbor.AspNetCore.WebApi.App
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();                
+                app.UseHsts();              
             }
 
             app.UseHttpsRedirection();

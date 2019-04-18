@@ -20,13 +20,16 @@ namespace RedArbor.AspNetCore.WebApi.App.Controllers
 
         // GET api/redarbor
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IEnumerable<EmployeeDTO>> GetAsync()
         {
             return await _serviceEmployee.GetAllEmployees();
         }
 
         // GET api/redarbor/1
-        [HttpGet("{id}")]   
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(EmployeeDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]        
         public async Task<ActionResult<EmployeeDTO>> GetByIdAsync(int id)
         {
             var employeeDTO = await _serviceEmployee.GetEmployeeById(id);
@@ -41,6 +44,7 @@ namespace RedArbor.AspNetCore.WebApi.App.Controllers
 
         // POST api/redarbor
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<EmployeeDTO>> PostAsync([FromBody] EmployeeDTO employeeDTO)
         {
             await _serviceEmployee.AddEmployee(employeeDTO);
@@ -50,6 +54,8 @@ namespace RedArbor.AspNetCore.WebApi.App.Controllers
 
         // PUT api/redarbor/1
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PutAsync(int id, [FromBody] EmployeeDTO employeeDTO)
         {
             bool updated = await _serviceEmployee.UpdateEmployee(id, employeeDTO);
@@ -64,6 +70,8 @@ namespace RedArbor.AspNetCore.WebApi.App.Controllers
 
         // DELETE api/redarbor/1
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             bool deleted = await _serviceEmployee.DeleteEmployee(id);
