@@ -1,0 +1,17 @@
+﻿CREATE TABLE [dbo].[Employee]
+(
+	[CompanyId] INT NOT NULL PRIMARY KEY,
+	[CreatedOn] DATETIME NOT NULL,
+	[DeletedOn] DATETIME NOT NULL,
+	[Email] VARCHAR(50) NOT NULL, 
+	[Fax] VARCHAR(11) NOT NULL,
+	[Name] VARCHAR(50) NOT NULL,
+	[Lastlogin] DATETIME NOT NULL,
+	[Password] NVARCHAR(20) NOT NULL,
+	[PortalId] INT NOT NULL,
+	[RoleId] INT NOT NULL,
+	[StatusId] INT NOT NULL,
+	[Telephone] VARCHAR(11) NOT NULL,
+	[UpdatedOn] DATETIME NOT NULL,
+	[Username] VARCHAR(50) NOT NULL,
+)
